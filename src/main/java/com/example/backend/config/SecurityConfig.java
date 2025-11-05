@@ -28,7 +28,8 @@ public class SecurityConfig {
                         .requestMatchers("/login",
                                 "/register",
                                 "/allUsers",
-                                "/aichat")
+                                "/aichat",
+                                "/sendAreaSet")
                                     .permitAll() // te endpointy są publiczne
                                       .anyRequest().authenticated()                        // reszta wymaga JWT
                 )

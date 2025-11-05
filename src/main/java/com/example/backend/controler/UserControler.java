@@ -38,7 +38,7 @@ public class UserControler {
     }
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
-
+        System.out.println(user.toString());
         return userService.saveUser(user);
     }
 
