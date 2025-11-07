@@ -8,6 +8,7 @@ import java.util.List;
 
 @Service
 public class PainService {
+
     public ResponseEntity<?> processPainData(List<Area> painData) {
         List<Area> AddScore = painData.stream().
                 filter((v)->v.getName().
