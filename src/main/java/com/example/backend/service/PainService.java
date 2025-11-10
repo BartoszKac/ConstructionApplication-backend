@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+
 import com.example.backend.model.Area;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

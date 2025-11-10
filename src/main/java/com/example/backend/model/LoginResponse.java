@@ -1,5 +1,11 @@
 package com.example.backend.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+
 public class LoginResponse {
     private String email;
     private String password;
@@ -7,8 +13,8 @@ public class LoginResponse {
     public LoginResponse() {
     }
 
-    public LoginResponse(String username, String password) {
-        this.email = username;
+    public LoginResponse(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 

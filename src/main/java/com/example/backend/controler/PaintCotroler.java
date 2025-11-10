@@ -25,6 +25,8 @@ public class PaintCotroler {
     @PostMapping("/sendAreaSet")
     public ResponseEntity<?> sendAreSet(@RequestBody List<Area> areaList) {
         ResponseEntity<?> responseEntity = painService.processPainData(areaList);
-        return responseEntity;
+        Double meters = (Double) responseEntity.getBody();
+        System.out.println("Metry do pomalowania: " + meters);
+       return apiShopService.RequestToApiShop(meters);
     }
 }

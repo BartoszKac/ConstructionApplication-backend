@@ -1,6 +1,8 @@
 package com.example.backend.service;
 
 import com.example.backend.constants.Constants;
+import com.example.backend.model.paint.PaintMapper;
+import com.example.backend.model.paint.PaintReturnFormat;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,8 +49,9 @@ public class ApiShopService {
             URL_ITEM = constants.getURL_ITEM_DETAILS(jsonNodItemId);
 
             JsonNode itemJson = GetItemJson();
-
-            return ResponseEntity.ok(itemJson);
+            JsonNode i = itemJson.path("localizedAspects");
+            PaintReturnFormat  paintReturnFormat = PaintMapper.map(itemJson);
+            return ResponseEntity.ok(paintReturnFormat);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
