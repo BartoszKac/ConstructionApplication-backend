@@ -17,7 +17,15 @@ public class Constants {
 
     private String defaultQuest="acrylic paint ";
 
+    private String[] s = new String[]{
+         "itemId",
+         "price_value",
+            "&forever-signs-of-scottsdale"
+    };
 
+    public String[] getS() {
+        return s;
+    }
 
     private String Scope = "https://api.ebay.com/oauth/api_scope";
 

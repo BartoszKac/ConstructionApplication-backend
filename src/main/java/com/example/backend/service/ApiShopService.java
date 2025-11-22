@@ -12,6 +12,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,9 +71,14 @@ public class ApiShopService {
             if (itemJson == null) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Nie udało się pobrać szczegółów przedmiotu");
             }
-
+            Map<String, Object> flatMap = new LinkedHashMap<>();
+            long start = System.nanoTime();
+          //  flatMap= Maper.flattenFor( itemJson);
+            Maper.flatten("",jsonNode,flatMap);
+            long end = System.nanoTime();
+            System.out.println("Czas " +(end-start) + " ms");
             //PaintReturnFormat paintReturnFormat = PaintMapper.map(itemJson);
-            Map<String,Object> wynik = Maper.map(itemJson,new String[]{"shippingOptions/shippingCost","seller/feedbackPercentage"});
+            Map<String,Object> wynik = Maper.map(flatMap, constants.getS());
             return ResponseEntity.ok(wynik);
            // return ResponseEntity.ok(paintReturnFormat);
 
