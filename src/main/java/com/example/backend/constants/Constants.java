@@ -12,8 +12,18 @@ public class Constants {
     @Value("${URL_ITEM_DETAILS}")
     private String URL_ITEM_DETAILS;
 
+    @Value("${URL_ACCESS_TOKEN}")
+    private String URL_ACCESS_TOKEN;
+
     private String defaultQuest="acrylic paint ";
 
+
+
+    private String Scope = "https://api.ebay.com/oauth/api_scope";
+
+    public String getScope() {
+        return Scope;
+    }
     public String getEbayBestCategoryUrl(String quest) {
 
         return EBAY_BEST_CATEGORY_URL+quest;
@@ -27,5 +37,7 @@ public class Constants {
         return URL_ITEM_DETAILS+itemId;
     }
 
-
+    public String getURL_ACCESS_TOKEN() {
+        return URL_ACCESS_TOKEN;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.backend.controler;
 
+import com.example.backend.constants.COLOR;
 import com.example.backend.constants.Constants;
 import com.example.backend.service.ApiShopService;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class TEST {
 
     @GetMapping("/TEST")
     public ResponseEntity<?> GetTest(){
-
-        return  apiShopService.RequestToApiShop(1);
+        COLOR color = COLOR.WHITE;
+        return  apiShopService.requestToApiShop(1,color);
     }
 }

@@ -1,86 +1,130 @@
 package com.example.backend.service;
 
+import com.example.backend.constants.COLOR;
 import com.example.backend.constants.Constants;
+import com.example.backend.maper.Maper;
 import com.example.backend.model.paint.PaintMapper;
 import com.example.backend.model.paint.PaintReturnFormat;
+import com.example.backend.security.EbayTokenSecurity;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class ApiShopService {
 
-    Constants constants;
-    public ApiShopService(Constants constants) {
+    private final Constants constants;
+    private final AccesService accesService;
+    private final RestTemplate restTemplate = new RestTemplate();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private String apiToken;
+    private String urlItem;
+
+    public ApiShopService(Constants constants, AccesService accesService) {
         this.constants = constants;
-
+        this.accesService = accesService;
     }
-    @Value("${API_EBAY_KEY}")
-    private String API_TOKEN;
 
-    private String URL;
-
-    private String URL_ITEM;
-
-    ObjectMapper objectMapper = new ObjectMapper();
-
-    private RestTemplate restTemplate = new RestTemplate();
-
-    public ResponseEntity<?> RequestToApiShop(double meters) {
-        if(meters < 0){
-            return  null;
+    public ResponseEntity<?> requestToApiShop(double meters, COLOR color) {
+        if (meters < 0) {
+            return ResponseEntity.badRequest().body("Nieprawidłowa wartość metrów");
         }
-        URL = constants.getEbayBestCategoryUrl("acrylic paint white 1L ");
+
+        if(this.apiToken == null){
+            setAccessToken();
+        }
+
+
+
+        String searchQuery = "sexyl";
+
+        String url = constants.getEbayBestCategoryUrl(searchQuery);
+
         try {
+            HttpEntity<Void> request = createRequestHeaders();
+            EbayTokenSecurity<ResponseEntity<String>> ebayTokenSecurity = new EbayTokenSecurity<>(
+                    () -> restTemplate.exchange(url, HttpMethod.GET, request, String.class)
+            );
 
-            HttpEntity<Map<String,Object>> request = createRequest();
+            ResponseEntity<String> response = ebayTokenSecurity.execute();
 
-            ResponseEntity<String> response = restTemplate.exchange(URL,HttpMethod.GET,request,String.class);
+            response = checkResponse(response,url);
+
             JsonNode jsonNode = objectMapper.readTree(response.getBody());
-            String jsonNodItemId = jsonNode.get("itemSummaries").
-                    get(0).
-                        get("itemId").asText();
+            JsonNode items = jsonNode.path("itemSummaries");
 
-            URL_ITEM = constants.getURL_ITEM_DETAILS(jsonNodItemId);
+            if (!items.isArray() || items.size() == 0) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Brak przedmiotów");
+            }
 
-            JsonNode itemJson = GetItemJson();
-            JsonNode i = itemJson.path("localizedAspects");
-            PaintReturnFormat  paintReturnFormat = PaintMapper.map(itemJson);
-            return ResponseEntity.ok(paintReturnFormat);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+            String itemId = items.get(0).path("itemId").asText();
+            urlItem = constants.getURL_ITEM_DETAILS(itemId);
+
+            JsonNode itemJson = getItemJson();
+            if (itemJson == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Nie udało się pobrać szczegółów przedmiotu");
+            }
+
+            //PaintReturnFormat paintReturnFormat = PaintMapper.map(itemJson);
+            Map<String,Object> wynik = Maper.map(itemJson,new String[]{"shippingOptions/shippingCost","seller/feedbackPercentage"});
+            return ResponseEntity.ok(wynik);
+           // return ResponseEntity.ok(paintReturnFormat);
+
+        } catch (Exception e) {
+            System.out.println("Błąd w requestToApiShop: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Wystąpił błąd serwera");
         }
-        return null;
     }
 
-    private HttpEntity<Map<String,Object>> createRequest(){
+    private HttpEntity<Void> createRequestHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-
-        // Tutaj ustawiasz Bearer token, nie Basic!
-        headers.set("Authorization", "Bearer " + API_TOKEN);
-        headers.set("Accept", "application/json");
-
+        headers.set("Authorization", "Bearer " + apiToken);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         return new HttpEntity<>(headers);
     }
-    private JsonNode GetItemJson(){
 
+
+    private JsonNode getItemJson() {
         try {
-            HttpEntity<Map<String,Object>> request = createRequest();
-
-            ResponseEntity<String> response = restTemplate.exchange(URL_ITEM,HttpMethod.GET,request,String.class);
-            JsonNode jsonNode = objectMapper.readTree(response.getBody());
-
-            return jsonNode;
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+            HttpEntity<Void> request = createRequestHeaders();
+            ResponseEntity<String> response = restTemplate.exchange(urlItem, HttpMethod.GET, request, String.class);
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                System.out.println("Błąd pobierania szczegółów: " + response.getStatusCode());
+                return null;
+            }
+            return objectMapper.readTree(response.getBody());
+        } catch (Exception e) {
+            System.out.println("Błąd getItemJson: " + e.getMessage());
+            return null;
         }
-        return null;
     }
 
+
+    private void setAccessToken() {
+        System.out.println("Pobieram nowy token...");
+        this.apiToken = accesService.getAccessToken();
+    }
+
+    public ResponseEntity<String> checkResponse(ResponseEntity<String> response, String url) {
+        if (response == null) {
+            setAccessToken();
+            HttpEntity<Void> requestRetry = createRequestHeaders();
+            EbayTokenSecurity<ResponseEntity<String>> retrySecurity = new EbayTokenSecurity<>(
+                    () -> restTemplate.exchange(url, HttpMethod.GET, requestRetry, String.class)
+            );
+            response = retrySecurity.execute();
+            if (response == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Błędne ID lub brak dostępu");
+            }
+
+        }
+        return response;
+    }
 }
