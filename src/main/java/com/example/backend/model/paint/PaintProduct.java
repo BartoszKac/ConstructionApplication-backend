@@ -7,8 +7,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class PaintProduct {
 
     private String unitCount;

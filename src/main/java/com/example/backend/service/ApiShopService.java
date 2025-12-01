@@ -2,10 +2,12 @@ package com.example.backend.service;
 
 import com.example.backend.constants.COLOR;
 import com.example.backend.constants.Constants;
+import com.example.backend.constants.ImportantQuest;
 import com.example.backend.maper.Maper;
 import com.example.backend.model.paint.PaintMapper;
 import com.example.backend.model.paint.PaintReturnFormat;
 import com.example.backend.security.EbayTokenSecurity;
+import com.example.backend.service.util.PatternChecker;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.*;
@@ -26,10 +28,12 @@ public class ApiShopService {
 
     private String apiToken;
     private String urlItem;
+    private PatternChecker patternChecker;
 
-    public ApiShopService(Constants constants, AccesService accesService) {
+    public ApiShopService(Constants constants, AccesService accesService,PatternChecker patternChecker) {
         this.constants = constants;
         this.accesService = accesService;
+        this.patternChecker = patternChecker;
     }
 
     public ResponseEntity<?> requestToApiShop(double meters, COLOR color) {
@@ -43,7 +47,7 @@ public class ApiShopService {
 
 
 
-        String searchQuery = "sexyl";
+        String searchQuery = constants.getImportantQuest(ImportantQuest.INTERIOR_WALL_PAINT);
 
         String url = constants.getEbayBestCategoryUrl(searchQuery);
 
@@ -72,14 +76,12 @@ public class ApiShopService {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Nie udało się pobrać szczegółów przedmiotu");
             }
             Map<String, Object> flatMap = new LinkedHashMap<>();
-            long start = System.nanoTime();
+            patternChecker.processPattern(jsonNode,new String[]{"f"});
           //  flatMap= Maper.flattenFor( itemJson);
             Maper.flatten("",jsonNode,flatMap);
-            long end = System.nanoTime();
-            System.out.println("Czas " +(end-start) + " ms");
-            //PaintReturnFormat paintReturnFormat = PaintMapper.map(itemJson);
+
             Map<String,Object> wynik = Maper.map(flatMap, constants.getS());
-            return ResponseEntity.ok(wynik);
+            return ResponseEntity.ok(jsonNode);
            // return ResponseEntity.ok(paintReturnFormat);
 
         } catch (Exception e) {

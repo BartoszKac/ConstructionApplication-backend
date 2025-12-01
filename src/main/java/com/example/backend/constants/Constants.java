@@ -17,10 +17,22 @@ public class Constants {
 
     private String defaultQuest="acrylic paint ";
 
+    public  String getImportantQuest(ImportantQuest questEnum) {
+        return questEnum.getQuest();
+    }
+
     private String[] s = new String[]{
          "itemId",
-         "price_value",
-            "&forever-signs-of-scottsdale"
+         "title",
+            "shortDescription",
+            "price_value",
+            "categoryPath",
+            "itemLocation_city",
+            "itemLocation_stateOrProvince",
+            "itemLocation_postalCode",
+            "itemLocation_country",
+            "image_imageUrl",
+            "itemWebUrl"
     };
 
     public String[] getS() {
@@ -48,4 +60,6 @@ public class Constants {
     public String getURL_ACCESS_TOKEN() {
         return URL_ACCESS_TOKEN;
     }
+
+
 }
