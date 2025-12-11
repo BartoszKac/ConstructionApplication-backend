@@ -76,12 +76,13 @@ public class ApiShopService {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Nie udało się pobrać szczegółów przedmiotu");
             }
             Map<String, Object> flatMap = new LinkedHashMap<>();
-            patternChecker.processPattern(jsonNode,new String[]{"f"});
+             List<?> list =  patternChecker.processPattern(items,new String[]{"white"});
           //  flatMap= Maper.flattenFor( itemJson);
+
             Maper.flatten("",jsonNode,flatMap);
 
             Map<String,Object> wynik = Maper.map(flatMap, constants.getS());
-            return ResponseEntity.ok(jsonNode);
+            return ResponseEntity.ok(list);
            // return ResponseEntity.ok(paintReturnFormat);
 
         } catch (Exception e) {

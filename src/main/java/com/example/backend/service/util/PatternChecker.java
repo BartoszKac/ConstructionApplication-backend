@@ -5,34 +5,48 @@ import com.example.backend.maper.Maper;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
 public class PatternChecker  {
 
-    public HashMap<String,Object> processPattern(JsonNode jsonNode, String[] args){
-        HashMap<String,Object> hashMap = new HashMap<>();
+    public List<HashMap<String,Object>> processPattern(JsonNode jsonNode, String[] args){
+        List<HashMap<String,Object>> list = new ArrayList<>();
 
-            for(int i = 0;i< jsonNode.size();i++){
-                JsonNode jsonNode1 = jsonNode.get(i);
-            }
-        HashMap<String,Object> hashMap1 = new HashMap<>();;
+
+        try {
             jsonNode.forEach(
                     node -> {
+                        HashMap<String,Object> hashMap1 = new HashMap<>();
 
-                        Maper.flatten("",node,hashMap1);
+                        Maper.flatten("", node, hashMap1);
+
+
+                        if (pattern(args, hashMap1)) {
+                            list.add(hashMap1);
+                        }
                     });
-
+        }catch (Exception e){
+            System.out.println("Blad w filturawniu dannych: " + e.getMessage());
+        }
         System.out.println(jsonNode.size());
 
 
 
-        return hashMap;
+        return list;
     }
 
     private boolean pattern(String[] args, Map<String,Object>map){
-           String test = (String) map.get("title");
+           String title = ((String) map.get("title")).toLowerCase();
+        System.out.println(title);
+                for(String s : args){
+                    if(!title.contains(s)){
+                        return false;
+                    }
+                }
         return true;
     }
 
