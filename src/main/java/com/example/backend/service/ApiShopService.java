@@ -14,13 +14,12 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ApiShopService {
 
+    private final WebScrapingService webScrapingService;
     private final Constants constants;
     private final AccesService accesService;
     private final RestTemplate restTemplate = new RestTemplate();
@@ -30,7 +29,8 @@ public class ApiShopService {
     private String urlItem;
     private PatternChecker patternChecker;
 
-    public ApiShopService(Constants constants, AccesService accesService,PatternChecker patternChecker) {
+    public ApiShopService(Constants constants, AccesService accesService, PatternChecker patternChecker, WebScrapingService webScrapingService) {
+        this.webScrapingService = webScrapingService;
         this.constants = constants;
         this.accesService = accesService;
         this.patternChecker = patternChecker;
@@ -41,49 +41,24 @@ public class ApiShopService {
             return ResponseEntity.badRequest().body("Nieprawidłowa wartość metrów");
         }
 
-        if(this.apiToken == null){
+        if (this.apiToken == null) {
             setAccessToken();
         }
 
 
 
-        String searchQuery = constants.getImportantQuest(ImportantQuest.INTERIOR_WALL_PAINT);
+try {
+            Map<String, Object> wynik = formatJsonForResponse();
 
-        String url = constants.getEbayBestCategoryUrl(searchQuery);
+            Map<String, Object> wynik1 = webScrapingService.scrapeWebsite("farba");
 
-        try {
-            HttpEntity<Void> request = createRequestHeaders();
-            EbayTokenSecurity<ResponseEntity<String>> ebayTokenSecurity = new EbayTokenSecurity<>(
-                    () -> restTemplate.exchange(url, HttpMethod.GET, request, String.class)
-            );
+            Map<String, Object> mainResult = new HashMap<>();
 
-            ResponseEntity<String> response = ebayTokenSecurity.execute();
+            mainResult.put("mapper", wynik.get("Ebay"));
+            mainResult.put("scraping", wynik1.get("products"));
 
-            response = checkResponse(response,url);
+            return ResponseEntity.ok(mainResult);
 
-            JsonNode jsonNode = objectMapper.readTree(response.getBody());
-            JsonNode items = jsonNode.path("itemSummaries");
-
-            if (!items.isArray() || items.size() == 0) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Brak przedmiotów");
-            }
-
-            String itemId = items.get(0).path("itemId").asText();
-            urlItem = constants.getURL_ITEM_DETAILS(itemId);
-
-            JsonNode itemJson = getItemJson();
-            if (itemJson == null) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Nie udało się pobrać szczegółów przedmiotu");
-            }
-            Map<String, Object> flatMap = new LinkedHashMap<>();
-             List<?> list =  patternChecker.processPattern(items,new String[]{"white"});
-          //  flatMap= Maper.flattenFor( itemJson);
-
-            Maper.flatten("",jsonNode,flatMap);
-
-            Map<String,Object> wynik = Maper.map(flatMap, constants.getS());
-            return ResponseEntity.ok(list);
-           // return ResponseEntity.ok(paintReturnFormat);
 
         } catch (Exception e) {
             System.out.println("Błąd w requestToApiShop: " + e.getMessage());
@@ -97,22 +72,6 @@ public class ApiShopService {
         headers.set("Authorization", "Bearer " + apiToken);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         return new HttpEntity<>(headers);
-    }
-
-
-    private JsonNode getItemJson() {
-        try {
-            HttpEntity<Void> request = createRequestHeaders();
-            ResponseEntity<String> response = restTemplate.exchange(urlItem, HttpMethod.GET, request, String.class);
-            if (!response.getStatusCode().is2xxSuccessful()) {
-                System.out.println("Błąd pobierania szczegółów: " + response.getStatusCode());
-                return null;
-            }
-            return objectMapper.readTree(response.getBody());
-        } catch (Exception e) {
-            System.out.println("Błąd getItemJson: " + e.getMessage());
-            return null;
-        }
     }
 
 
@@ -136,4 +95,67 @@ public class ApiShopService {
         }
         return response;
     }
+
+    private Map<String, Object> formatJsonForResponse() {
+        String searchQuery = constants.getImportantQuest(ImportantQuest.INTERIOR_WALL_PAINT);
+        int limit = 50;
+        int offset = 0;
+
+        List<Map<String, Object>> list = new ArrayList<>();
+
+            for(int i =0;i<6;i++) {
+                String url = constants.getEbayBestCategoryUrl(searchQuery) + "&limit=" + limit + "&offset=" + offset;
+
+                try {
+                    HttpEntity<Void> request = createRequestHeaders();
+                    EbayTokenSecurity<ResponseEntity<String>> ebayTokenSecurity = new EbayTokenSecurity<>(
+                            () -> restTemplate.exchange(url, HttpMethod.GET, request, String.class)
+                    );
+
+                    ResponseEntity<String> response = ebayTokenSecurity.execute();
+                    response = checkResponse(response, url);
+
+                    JsonNode jsonNode = objectMapper.readTree(response.getBody());
+                    JsonNode items = jsonNode.path("itemSummaries");
+
+//                if (!items.isArray() || items.size() == 0) {
+//                    break; // brak więcej przedmiotów
+//                }
+
+                    for (JsonNode itemJson : items) {
+                        Map<String, Object> flatMap = new LinkedHashMap<>();
+                        Maper.flatten("", itemJson, flatMap);
+                        Map<String, Object> wynik = Maper.map(flatMap, constants.getS());
+                        list.add(wynik);
+                    }
+                    offset += limit;
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return Map.of("error", "Nie udało się pobrać danych z eBay");
+                }
+            }
+
+        return Map.of("Ebay", list);
+    }
+
+
+
+    @Deprecated
+    private JsonNode getItemJson() {
+        try {
+            HttpEntity<Void> request = createRequestHeaders();
+            ResponseEntity<String> response = restTemplate.exchange(urlItem, HttpMethod.GET, request, String.class);
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                System.out.println("Błąd pobierania szczegółów: " + response.getStatusCode());
+                return null;
+            }
+            return objectMapper.readTree(response.getBody());
+        } catch (Exception e) {
+            System.out.println("Błąd getItemJson: " + e.getMessage());
+            return null;
+        }
+    }
+
 }

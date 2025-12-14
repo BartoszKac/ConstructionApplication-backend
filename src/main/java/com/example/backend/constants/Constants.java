@@ -9,11 +9,16 @@ public class Constants {
     @Value("${EBAY_BEST_CATEGORY_URL}")
     private String EBAY_BEST_CATEGORY_URL;
 
+
+
     @Value("${URL_ITEM_DETAILS}")
     private String URL_ITEM_DETAILS;
 
     @Value("${URL_ACCESS_TOKEN}")
     private String URL_ACCESS_TOKEN;
+
+    @Value("${URL_WEBSRAPING_SERVICE}")
+    private String URL_WEBSRAPING_SERVICE;
 
     private String defaultQuest="acrylic paint ";
 
@@ -59,6 +64,10 @@ public class Constants {
 
     public String getURL_ACCESS_TOKEN() {
         return URL_ACCESS_TOKEN;
+    }
+
+    public String getURL_WEBSRAPING_SERVICE() {
+        return URL_WEBSRAPING_SERVICE;
     }
 
 
