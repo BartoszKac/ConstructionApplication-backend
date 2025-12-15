@@ -7,6 +7,7 @@ import com.example.backend.maper.Maper;
 import com.example.backend.model.paint.PaintMapper;
 import com.example.backend.model.paint.PaintReturnFormat;
 import com.example.backend.security.EbayTokenSecurity;
+import com.example.backend.service.util.JsonCalculatorService;
 import com.example.backend.service.util.PatternChecker;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +20,7 @@ import java.util.*;
 @Service
 public class ApiShopService {
 
+    private final JsonCalculatorService jsonCalculatorService;
     private final WebScrapingService webScrapingService;
     private final Constants constants;
     private final AccesService accesService;
@@ -29,7 +31,8 @@ public class ApiShopService {
     private String urlItem;
     private PatternChecker patternChecker;
 
-    public ApiShopService(Constants constants, AccesService accesService, PatternChecker patternChecker, WebScrapingService webScrapingService) {
+    public ApiShopService(JsonCalculatorService jsonCalculatorService, Constants constants, AccesService accesService, PatternChecker patternChecker, WebScrapingService webScrapingService) {
+        this.jsonCalculatorService = jsonCalculatorService;
         this.webScrapingService = webScrapingService;
         this.constants = constants;
         this.accesService = accesService;
@@ -54,10 +57,11 @@ try {
 
             Map<String, Object> mainResult = new HashMap<>();
 
-            mainResult.put("mapper", wynik.get("Ebay"));
+            mainResult.put("mapper", wynik.get("apiShop"));
             mainResult.put("scraping", wynik1.get("products"));
+            Map<String, Object> main = jsonCalculatorService.calculate(mainResult);
 
-            return ResponseEntity.ok(mainResult);
+    return ResponseEntity.ok(main);
 
 
         } catch (Exception e) {
@@ -103,7 +107,7 @@ try {
 
         List<Map<String, Object>> list = new ArrayList<>();
 
-            for(int i =0;i<6;i++) {
+            for(int i =0;i<2;i++) {
                 String url = constants.getEbayBestCategoryUrl(searchQuery) + "&limit=" + limit + "&offset=" + offset;
 
                 try {
@@ -137,7 +141,7 @@ try {
                 }
             }
 
-        return Map.of("Ebay", list);
+        return Map.of("apiShop", list);
     }
 
 

@@ -25,6 +25,8 @@ public class PaintCotroler {
 
     @PostMapping("/sendAreaSet")
     public ResponseEntity<?> sendAreSet(@RequestBody AreaSetRequest areaSetRequest) {
+        System.out.println(areaSetRequest.toString());
+        System.out.println("Reqest Dotarl");
         ResponseEntity<?> responseEntity = painService.processPainData(areaSetRequest.getAreas());
         Double meters = (Double) responseEntity.getBody();
         System.out.println("Metry do pomalowania: " + meters);
