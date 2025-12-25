@@ -10,5 +10,10 @@ public enum COLOR {
     PURPLE,
     BROWN,
     BLACK,
-    WHITE
+    WHITE;
+
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase();
+    }
 }

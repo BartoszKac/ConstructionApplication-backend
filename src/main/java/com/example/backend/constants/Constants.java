@@ -3,6 +3,8 @@ package com.example.backend.constants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 @Component
 public class Constants {
 
@@ -22,11 +24,8 @@ public class Constants {
 
     private String defaultQuest="acrylic paint ";
 
-    public  String getImportantQuest(ImportantQuest questEnum) {
-        return questEnum.getQuest();
-    }
 
-    private String[] s = new String[]{
+    private String[] ITEM_FIELD_NAMES = new String[]{
          "itemId",
          "title",
             "shortDescription",
@@ -40,15 +39,52 @@ public class Constants {
             "itemWebUrl"
     };
 
-    public String[] getS() {
-        return s;
+    public  String getImportantQuest(ImportantQuest questEnum) {
+        return questEnum.getQuest();
     }
 
+
     private String Scope = "https://api.ebay.com/oauth/api_scope";
+
+
+    private String[] FilterByString = {
+
+            "paint",
+            "gal"
+    };
+
+
+
+    public void AddFilter(COLOR color) {
+        // 1. Zapamiętujemy obecną długość
+        int n = FilterByString.length;
+
+        // 2. Arrays.copyOf tworzy nową tablicę o rozmiarze n + 1
+        // i automatycznie kopiuje do niej starą zawartość
+        FilterByString = Arrays.copyOf(FilterByString, n + 1);
+
+        // 3. Wstawiamy nowy element na ostatni indeks (czyli n)
+        FilterByString[n] = color.toString();
+        System.out.println("Dodano filtr koloru: " + color.toString());
+        System.out.println(Arrays.toString(FilterByString));
+    }
+
+    private int SIZE_OF_PAGE = 2;
+
+
+    public int getSize_Of_Page() {
+        return SIZE_OF_PAGE;
+    }
+
+
+    public String[] getFilterByString() {
+        return FilterByString;
+    }
 
     public String getScope() {
         return Scope;
     }
+
     public String getEbayBestCategoryUrl(String quest) {
 
         return EBAY_BEST_CATEGORY_URL+quest;
@@ -70,5 +106,7 @@ public class Constants {
         return URL_WEBSRAPING_SERVICE;
     }
 
-
+    public String[] getItem_Field_Names() {
+        return ITEM_FIELD_NAMES;
+    }
 }

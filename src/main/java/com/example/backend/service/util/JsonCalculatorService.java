@@ -1,8 +1,10 @@
 package com.example.backend.service.util;
 
+import com.example.backend.constants.ActualRequest;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -11,6 +13,9 @@ import java.util.regex.Pattern;
 
 @Service
 public class JsonCalculatorService {
+
+    @Autowired
+    private ActualRequest actualRequest;
 
     private final double LITRY_NA_METR = 12;
 
@@ -34,8 +39,14 @@ public class JsonCalculatorService {
                     if (titleNode != null) {
                         String title = titleNode.asText();
                         Double liters = calculateTitleToDouble(title);
-                        objNode.put("liters", liters);
+                        Double quantity = calcuteHowMany(
+                                actualRequest.getValue("meters",Double.class)
+                                ,LITRY_NA_METR,
+                                liters);
+                        Double prize = Double.parseDouble(objNode.get("price_value").asText());                        objNode.put("liters", liters);
                         objNode.put("m^2", calcutetom(liters));
+                        objNode.put("ilosc",quantity);
+                        objNode.put("ourCost",round(quantity,prize));
                     }
                     apiShopList.add(objNode);
                 }
@@ -53,8 +64,15 @@ public class JsonCalculatorService {
                 if (titleNode != null) {
                     String title = titleNode.asText();
                     Double liters = calculateTitleToDouble(title);
+                    Double quantity = calcuteHowMany(
+                            actualRequest.getValue("meters",Double.class)
+                            ,LITRY_NA_METR,
+                            liters);
+                    Double prize = Double.parseDouble(objNode.get("price_value").asText());
                     objNode.put("liters", liters);
                     objNode.put("m^2", calcutetom(liters));
+                    objNode.put("ilosc",quantity);
+                    objNode.put("ourCost",round(quantity,prize));
                 }
                 productsList.add(objNode);
             }
@@ -120,5 +138,13 @@ public class JsonCalculatorService {
         }
         Double m2 = l * LITRY_NA_METR ;
         return  m2.toString();
+    }
+
+    private double calcuteHowMany(double metres,double wydajnosc,double liters){
+        double ilosc =  metres / ( liters * wydajnosc)  ;
+        return ilosc;
+    }
+    private double round(double value, double prize) {
+        return Math.ceil(value) * prize;
     }
 }

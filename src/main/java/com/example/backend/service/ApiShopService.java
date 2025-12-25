@@ -47,10 +47,10 @@ public class ApiShopService {
         if (this.apiToken == null) {
             setAccessToken();
         }
+        constants.AddFilter(color);
 
 
-
-try {
+        try {
             Map<String, Object> wynik = formatJsonForResponse();
 
             Map<String, Object> wynik1 = webScrapingService.scrapeWebsite("farba");
@@ -107,7 +107,7 @@ try {
 
         List<Map<String, Object>> list = new ArrayList<>();
 
-            for(int i =0;i<2;i++) {
+            for(int i =0;i<constants.getSize_Of_Page();i++) {
                 String url = constants.getEbayBestCategoryUrl(searchQuery) + "&limit=" + limit + "&offset=" + offset;
 
                 try {
@@ -121,15 +121,16 @@ try {
 
                     JsonNode jsonNode = objectMapper.readTree(response.getBody());
                     JsonNode items = jsonNode.path("itemSummaries");
+                    JsonNode itemsToPatern =  patternChecker.processPattern(items);
 
 //                if (!items.isArray() || items.size() == 0) {
 //                    break; // brak więcej przedmiotów
 //                }
 
-                    for (JsonNode itemJson : items) {
+                    for (JsonNode itemJson : itemsToPatern) {
                         Map<String, Object> flatMap = new LinkedHashMap<>();
                         Maper.flatten("", itemJson, flatMap);
-                        Map<String, Object> wynik = Maper.map(flatMap, constants.getS());
+                        Map<String, Object> wynik = Maper.map(flatMap, constants.getItem_Field_Names());
                         list.add(wynik);
                     }
                     offset += limit;
