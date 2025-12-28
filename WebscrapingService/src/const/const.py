@@ -5,7 +5,11 @@ headers = {
                   "Chrome/120.0.0.0 Safari/537.36"
 }
 
-pages = ["https://www.castorama.pl/search?term=farby%20wewnetrzne"]
+pages = ["https://www.castorama.pl/search?term=farba%20wentrzna%20do%20scian"]
+
+
+
+pageOfSize = 2
 # pages = [
 #     "https://www.castorama.pl/search?term=farby%20wewnetrzne",
 #     "https://www.obi.pl/farby-lakiery/farby-wewnetrzne/c/1292",

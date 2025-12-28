@@ -1,0 +1,112 @@
+package com.example.backend.constants;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+
+@Component
+public class Constants {
+
+    @Value("${EBAY_BEST_CATEGORY_URL}")
+    private String EBAY_BEST_CATEGORY_URL;
+
+
+
+    @Value("${URL_ITEM_DETAILS}")
+    private String URL_ITEM_DETAILS;
+
+    @Value("${URL_ACCESS_TOKEN}")
+    private String URL_ACCESS_TOKEN;
+
+    @Value("${URL_WEBSRAPING_SERVICE}")
+    private String URL_WEBSRAPING_SERVICE;
+
+    private String defaultQuest="acrylic paint ";
+
+
+    private String[] ITEM_FIELD_NAMES = new String[]{
+         "itemId",
+         "title",
+            "shortDescription",
+            "price_value",
+            "categoryPath",
+            "itemLocation_city",
+            "itemLocation_stateOrProvince",
+            "itemLocation_postalCode",
+            "itemLocation_country",
+            "image_imageUrl",
+            "itemWebUrl"
+    };
+
+    public  String getImportantQuest(ImportantQuest questEnum) {
+        return questEnum.getQuest();
+    }
+
+
+    private String Scope = "https://api.ebay.com/oauth/api_scope";
+
+
+    private String[] FilterByString = {
+
+            "paint",
+            "gal"
+    };
+
+
+
+    public void AddFilter(COLOR color) {
+        // 1. Zapamiętujemy obecną długość
+        int n = FilterByString.length;
+
+        // 2. Arrays.copyOf tworzy nową tablicę o rozmiarze n + 1
+        // i automatycznie kopiuje do niej starą zawartość
+        FilterByString = Arrays.copyOf(FilterByString, n + 1);
+
+        // 3. Wstawiamy nowy element na ostatni indeks (czyli n)
+        FilterByString[n] = color.toString();
+        System.out.println("Dodano filtr koloru: " + color.toString());
+        System.out.println(Arrays.toString(FilterByString));
+    }
+
+    private int SIZE_OF_PAGE = 2;
+
+
+    public int getSize_Of_Page() {
+        return SIZE_OF_PAGE;
+    }
+
+
+    public String[] getFilterByString() {
+        return FilterByString;
+    }
+
+    public String getScope() {
+        return Scope;
+    }
+
+    public String getEbayBestCategoryUrl(String quest) {
+
+        return EBAY_BEST_CATEGORY_URL+quest;
+    }
+
+    public String getEbayBestCategoryUrl(Enum Color,double area) {
+        return EBAY_BEST_CATEGORY_URL+defaultQuest+String.valueOf(area) + Color.toString();
+    }
+
+    public String getURL_ITEM_DETAILS(String itemId) {
+        return URL_ITEM_DETAILS+itemId;
+    }
+
+    public String getURL_ACCESS_TOKEN() {
+        return URL_ACCESS_TOKEN;
+    }
+
+    public String getURL_WEBSRAPING_SERVICE() {
+        return URL_WEBSRAPING_SERVICE;
+    }
+
+    public String[] getItem_Field_Names() {
+        return ITEM_FIELD_NAMES;
+    }
+}

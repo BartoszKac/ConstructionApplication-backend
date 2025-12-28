@@ -2,8 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
-from src.const.const import headers
+from src.const.const import headers,pageOfSize
 from src.model.MapperUrl import MapperUrl
+from src.service.utills.ChangingUrl import ChangeUrl
 
 
 class WebScrapingService:
@@ -14,35 +15,36 @@ class WebScrapingService:
     # POBIERANIE STRON
     # =========================
     def check_page(self, url: str):
-        try:
-            print(f"\n===== Sprawdzam URL: {url} =====")
+        for i in range(1,pageOfSize):
+            try:
+                print(f"\n===== Sprawdzam URL: {url} =====")
 
-            response = requests.get(url, headers=headers, timeout=10)
+                response = requests.get(ChangeUrl.changeUrl(url,i), headers=headers, timeout=10)
 
-            print(f"Status code: {response.status_code}")
+                print(f"Status code: {response.status_code}")
 
-            if response.status_code in (403, 429):
-                print("❌ Strona blokuje requesty (403/429)")
-                return
+                if response.status_code in (403, 429):
+                    print("❌ Strona blokuje requesty (403/429)")
+                    return
 
-            text = response.text.lower()
-            block_signals = [
-                "access denied",
-                "request blocked",
-                "captcha",
-                "cloudflare",
-                "error 1020",
-            ]
+                text = response.text.lower()
+                block_signals = [
+                    "access denied",
+                    "request blocked",
+                    "captcha",
+                    "cloudflare",
+                    "error 1020",
+                ]
 
-            if any(signal in text for signal in block_signals):
-                print("❌ Wykryto zabezpieczenia (Cloudflare / Captcha)")
-                return
+                if any(signal in text for signal in block_signals):
+                    print("❌ Wykryto zabezpieczenia (Cloudflare / Captcha)")
+                    return
 
-            self.html_pages.append(response.text)
-            print("✅ HTML zapisany w pamięci")
+                self.html_pages.append(response.text)
+                print("✅ HTML zapisany w pamięci")
 
-        except Exception as e:
-            print(f"❌ Błąd requesta: {e}")
+            except Exception as e:
+                print(f"❌ Błąd requesta: {e}")
 
     # =========================
     # PARSOWANIE HTML
@@ -70,8 +72,8 @@ class WebScrapingService:
                             results.append({
                                 "title": item.get("name"),
                                 "url": item.get("url"),
-                                "image": item.get("image"),
-                                "price": item.get("offers", {}).get("price"),
+                                "image_imageUrl": item.get("image"),
+                                "price_value": item.get("offers", {}).get("price"),
                                 "currency": item.get("offers", {}).get("priceCurrency"),
                             })
                 except json.JSONDecodeError:

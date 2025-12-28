@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e0cf0fb5-f101-4c76-8d6e-63c91f9213e8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/controler/UserControler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/controler/UserControler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/LoginResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/LoginResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/util/JsonCalculatorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/util/JsonCalculatorService.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="package.json" />
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$USER_HOME$/.jdks/openjdk-24.0.1/lib/src.zip!/java.base/java/util/Map.java" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="33IPU0MPsiljVVuhOHnracQ9zgp" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Testf.executor": "Run",
+    "Application.WebScrapingService.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.BackendApplication.executor": "Run",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/User/Desktop/Templatka/BackendApp",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Java",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="Spring Boot.BackendApplication">
+    <configuration name="Testf" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.example.backend.Testf" />
+      <module name="backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.backend.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WebScrapingService" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.example.backend.service.WebScrapingService" />
+      <module name="backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.backend.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="backend" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.backend.BackendApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Testf" />
+        <item itemvalue="Application.WebScrapingService" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-21.0.2-openjdk-21.0.2-f644763e9732-c0c073db" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e0cf0fb5-f101-4c76-8d6e-63c91f9213e8" name="Changes" comment="" />
+      <created>1759001628426</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1759001628426</updated>
+      <workItem from="1759001631372" duration="2030000" />
+      <workItem from="1759055064926" duration="3127000" />
+      <workItem from="1759080066466" duration="7306000" />
+      <workItem from="1759089791895" duration="1962000" />
+      <workItem from="1759159078664" duration="11942000" />
+      <workItem from="1759333892679" duration="761000" />
+      <workItem from="1759771518704" duration="3881000" />
+      <workItem from="1760171852909" duration="186000" />
+      <workItem from="1760461989713" duration="133000" />
+      <workItem from="1760704872329" duration="50000" />
+      <workItem from="1760710216560" duration="641000" />
+      <workItem from="1760740019486" duration="248000" />
+      <workItem from="1760800330824" duration="50000" />
+      <workItem from="1760800886898" duration="600000" />
+      <workItem from="1760815790315" duration="4668000" />
+      <workItem from="1760821163732" duration="2258000" />
+      <workItem from="1760889860565" duration="2218000" />
+      <workItem from="1760892690847" duration="4018000" />
+      <workItem from="1760898733839" duration="398000" />
+      <workItem from="1760899172942" duration="3913000" />
+      <workItem from="1760903104752" duration="1423000" />
+      <workItem from="1760959731022" duration="2520000" />
+      <workItem from="1760972037207" duration="3926000" />
+      <workItem from="1760986356248" duration="578000" />
+      <workItem from="1760986956127" duration="1053000" />
+      <workItem from="1761924181283" duration="912000" />
+      <workItem from="1762020747224" duration="1663000" />
+      <workItem from="1762095583812" duration="3606000" />
+      <workItem from="1762164290848" duration="612000" />
+      <workItem from="1762296556094" duration="4940000" />
+      <workItem from="1762374045468" duration="2255000" />
+      <workItem from="1762424250247" duration="588000" />
+      <workItem from="1762430908234" duration="682000" />
+      <workItem from="1762438721781" duration="3472000" />
+      <workItem from="1762521210191" duration="9863000" />
+      <workItem from="1762772127709" duration="13602000" />
+      <workItem from="1762895745072" duration="34000" />
+      <workItem from="1763464138850" duration="5802000" />
+      <workItem from="1763653700686" duration="4580000" />
+      <workItem from="1763730808541" duration="22288000" />
+      <workItem from="1763814197924" duration="10568000" />
+      <workItem from="1764261407940" duration="2142000" />
+      <workItem from="1764328125490" duration="1855000" />
+      <workItem from="1764333897575" duration="67000" />
+      <workItem from="1764529146460" duration="1554000" />
+      <workItem from="1764604236748" duration="6788000" />
+      <workItem from="1764626872255" duration="1524000" />
+      <workItem from="1764659298515" duration="1759000" />
+      <workItem from="1764689745614" duration="2590000" />
+      <workItem from="1764709096697" duration="645000" />
+      <workItem from="1765548433222" duration="3204000" />
+      <workItem from="1765643009336" duration="2120000" />
+      <workItem from="1765711429169" duration="4520000" />
+      <workItem from="1765729266282" duration="5719000" />
+      <workItem from="1765749914390" duration="3037000" />
+      <workItem from="1765829111576" duration="5097000" />
+      <workItem from="1765837783421" duration="2803000" />
+      <workItem from="1766098258258" duration="4179000" />
+      <workItem from="1766142169877" duration="5643000" />
+      <workItem from="1766157835674" duration="432000" />
+      <workItem from="1766224511268" duration="3007000" />
+      <workItem from="1766259469188" duration="4584000" />
+      <workItem from="1766397893601" duration="1798000" />
+      <workItem from="1766485490915" duration="617000" />
+      <workItem from="1766690123061" duration="2239000" />
+      <workItem from="1766699927873" duration="3055000" />
+      <workItem from="1766746366339" duration="636000" />
+      <workItem from="1766762082654" duration="3899000" />
+      <workItem from="1766868828427" duration="60000" />
+      <workItem from="1766869374346" duration="45000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
