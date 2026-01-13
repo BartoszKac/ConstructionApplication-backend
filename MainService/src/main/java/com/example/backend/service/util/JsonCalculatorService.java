@@ -14,8 +14,14 @@ import java.util.regex.Pattern;
 @Service
 public class JsonCalculatorService {
 
-    @Autowired
+
+    public JsonCalculatorService(ActualRequest actualRequest, PaintCoverageService paintCoverageService) {
+        this.actualRequest = actualRequest;
+        this.paintCoverageService = paintCoverageService;
+    }
+
     private ActualRequest actualRequest;
+    PaintCoverageService paintCoverageService;
 
     // Wydajność: ile m2 pomalujemy z 1 litra (wg Twojego kodu 12)
     private final double LITRY_NA_METR = 12.0;
@@ -74,7 +80,7 @@ public class JsonCalculatorService {
                     double price = Double.parseDouble(priceNode.asText().replace(",", "."));
 
                     // 1. Ile m2 pomalujemy jedną puszką
-                    double coveragePerCan = liters * LITRY_NA_METR;
+                    double coveragePerCan = liters * paintCoverageService.getM2PerLiter(title);
 
                     // 2. Ile puszek potrzebujemy (target / wydajność jednej puszki)
                     double cansNeeded = (coveragePerCan > 0) ? targetMeters / coveragePerCan : 0;
@@ -84,6 +90,7 @@ public class JsonCalculatorService {
 
                     // Dodajemy wyniki do obiektu JSON
                     objNode.put("liters", liters);
+                    objNode.put("m^2", paintCoverageService.getM2PerLiter(title));
                     objNode.put("coverage_m2", String.format("%.2f", coveragePerCan));
                     objNode.put("cans_needed", cansNeeded);
                     objNode.put("calculated_cost", totalCost);
