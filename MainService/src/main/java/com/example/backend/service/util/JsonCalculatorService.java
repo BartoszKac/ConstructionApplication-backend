@@ -25,6 +25,7 @@ public class JsonCalculatorService {
 
     // Wydajność: ile m2 pomalujemy z 1 litra (wg Twojego kodu 12)
     private final double LITRY_NA_METR = 12.0;
+    private final double USD_TO_PLN = 4.05; // Kurs dolara do przeliczenia eBaya
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public Map<String, Object> calculate(Map<String, Object> itemMap) {
@@ -37,9 +38,9 @@ public class JsonCalculatorService {
         Double meters = actualRequest.getValue("meters", Double.class);
         double targetMeters = (meters != null) ? meters : 0.0;
 
-        // Przetwarzamy obie listy (mapper i scraping) tą samą logiką
-        resultMap.put("mapper", processList(itemJson.get("mapper"), targetMeters));
-        resultMap.put("scraping", processList(itemJson.get("scraping"), targetMeters));
+        // Przetwarzamy obie listy (mapper i scraping) tą samą logiką, ale mapper to eBay (dolary)
+        resultMap.put("mapper", processList(itemJson.get("mapper"), targetMeters, true));
+        resultMap.put("scraping", processList(itemJson.get("scraping"), targetMeters, false));
 
         return resultMap;
     }
@@ -47,13 +48,13 @@ public class JsonCalculatorService {
     /**
      * Główna pętla przetwarzająca listę produktów
      */
-    private List<ObjectNode> processList(JsonNode listNode, double targetMeters) {
+    private List<ObjectNode> processList(JsonNode listNode, double targetMeters, boolean isEbay) {
         List<ObjectNode> processedList = new ArrayList<>();
 
         if (listNode != null && listNode.isArray()) {
             for (JsonNode node : listNode) {
                 if (node.isObject()) {
-                    processedList.add(enrichProductData((ObjectNode) node, targetMeters));
+                    processedList.add(enrichProductData((ObjectNode) node, targetMeters, isEbay));
                 }
             }
         }
@@ -63,7 +64,7 @@ public class JsonCalculatorService {
     /**
      * Wzbogacanie pojedynczego obiektu o obliczenia
      */
-    private ObjectNode enrichProductData(ObjectNode objNode, double targetMeters) {
+    private ObjectNode enrichProductData(ObjectNode objNode, double targetMeters, boolean isEbay) {
         JsonNode titleNode = objNode.get("title");
         JsonNode priceNode = objNode.get("price_value");
 
@@ -78,6 +79,11 @@ public class JsonCalculatorService {
                 try {
                     // Parsowanie ceny z obsługą przecinka
                     double price = Double.parseDouble(priceNode.asText().replace(",", "."));
+
+                    // JEŚLI EBAY (mapper), PRZELICZAMY DOLARY NA ZŁOTÓWKI
+                    if (isEbay) {
+                        price = price * USD_TO_PLN;
+                    }
 
                     // 1. Ile m2 pomalujemy jedną puszką
                     double coveragePerCan = liters * paintCoverageService.getM2PerLiter(title);

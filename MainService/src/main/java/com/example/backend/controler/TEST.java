@@ -22,7 +22,7 @@ public class TEST {
 
     @GetMapping("/TEST")
     public ResponseEntity<?> GetTest(){
-        COLOR color = COLOR.RED;
+        COLOR color = COLOR.WHITE;
         actualRequest.addValue("meters",15d);
         return  apiShopService.requestToApiShop(1,color);
     }
