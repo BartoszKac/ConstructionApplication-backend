@@ -27,27 +27,20 @@ public class AccesService {
 
     public String getAccessToken() {
         HttpEntity<String> httpEntity = createRequest();
-
-
         try {
-
-
             ResponseEntity<Map> response = restTemplate.exchange(
                     Constats.getURL_ACCESS_TOKEN(),
                     HttpMethod.POST,
                     httpEntity,
                     Map.class
             );
-
             Map<String, Object> responseBody = response.getBody();
 
             if (responseBody != null) {
-
                 return (String) responseBody.get("access_token");
             } else {
                 return "Błąd: body odpowiedzi jest puste";
             }
-
         } catch (HttpClientErrorException | HttpServerErrorException ex) {
             return "Błąd HTTP: " + ex.getStatusCode() + " - " + ex.getResponseBodyAsString();
         } catch (Exception ex) {
@@ -55,14 +48,11 @@ public class AccesService {
         }
     }
 
-
     private HttpEntity<String> createRequest() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.set("Authorization", "Basic " + Base64ClientPassword);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        // Tworzymy body w formacie x-www-form-urlencoded
         String body = "grant_type=client_credentials&scope=" + Constats.getScope();
 
         return new HttpEntity<>(body, headers);

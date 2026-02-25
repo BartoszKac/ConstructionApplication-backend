@@ -71,35 +71,29 @@ class CastoramaTilesEngine:
 
                             print(f"   ✅ DOPASOWANO: {name[:50]}...")
 
-                            # Pobieranie ceny
                             price = 0.0
                             offers = item.get("offers", {})
                             if isinstance(offers, dict):
-                                # Castorama używa różnych pól dla ceny
                                 p_val = offers.get("price") or offers.get("priceAmount")
                                 if p_val:
                                     price = float(str(p_val).replace(',', '.'))
-
                             if price > 0:
                                 total_cost = round(price * required_area, 2)
                                 pieces_needed = 0
                                 if single_tile_m2:
                                     pieces_needed = math.ceil(required_area / single_tile_m2)
-
-                                # Dodaj to w engine.py, żeby pobierać URL zdjęcia
                                 all_products.append({
                                     "title": name,
                                     "price_per_m2": price,
                                     "total_project_cost": total_cost,
                                     "pieces_needed": pieces_needed,
                                     "url": item.get("url"),
-                                    "image": item.get("image")  # Castorama podaje to w JSON-LD
+                                    "image": item.get("image")
                                 })
                 except Exception as e:
                     print(f"⚠️ Błąd wewnątrz pętli JSON: {e}")
                     continue
 
-            # Sortowanie od najtańszej oferty
             return sorted(all_products, key=lambda x: x['total_project_cost'])
 
         except Exception as e:

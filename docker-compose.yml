@@ -1,0 +1,108 @@
+services:
+  # --- Discovery Server (Java) ---
+  eureka-server:
+    build: ./EurekaSerwer
+    ports:
+      - "8761:8761"
+    networks:
+      - micro-network
+
+  # --- API Gateway (Java) ---
+  gateway:
+    build: ./Gateway
+    ports:
+      - "8085:8085"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+    networks:
+      - micro-network
+
+  # --- Baza Danych (PostgreSQL) ---
+  postgres-db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    networks:
+      - micro-network
+
+  # --- Broker Wiadomości (RabbitMQ) ---
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - micro-network
+
+  # --- Główny Backend (Java) ---
+  main-service:
+    build: ./MainService
+    ports:
+      - "8082:8082"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - DB_URL=jdbc:postgresql://postgres-db:5432/mydatabase
+      - DB_USERNAME=user
+      - DB_PASSWORD=password
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - JWT_SECRET=replace_this_with_a_long_random_secret_key
+      - OPENROUTER_API_KEY=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
+      - OPENROUTER_URL=https://openrouter.ai/api/v1/chat/completions
+      - EBAY_BEST_CATEGORY_URL=https://api.ebay.com/buy/browse/v1/item_summary/search?q=
+      - BASE64_CLIENT_PASSWORD=QmFydG9zekstQ29uc3RydWMtUFJELTEwZDliN2JkZi1kMTQwZDRlZDpQUkQtMGQ5YjdiZGZhYjUxLWUyNTMtNDg0MS04YmY5LTQwOWMKCg==
+      - URL_ITEM_DETAILS=https://api.ebay.com/buy/browse/v1/item/
+      - URL_ACCESS_TOKEN=https://api.ebay.com/identity/v1/oauth2/token
+      - URL_WEBSRAPING_SERVICE=http://web-scraping-service:5000/compute
+    depends_on:
+      - eureka-server
+      - postgres-db
+      - rabbitmq
+    networks:
+      - micro-network
+
+  # --- Serwis AI (Python + SAM Model) ---
+  painting-service:
+    build: ./PaintingService
+    ports:
+      - "8087:8087"
+    environment:
+      - EUREKA_SERVER=http://eureka-server:8761/eureka
+      - INSTANCE_HOST=painting-service
+    depends_on:
+      - eureka-server
+    networks:
+      - micro-network
+
+  # --- Serwis Scrapingu (Python + Spacy) ---
+  web-scraping-service:
+    build: ./WebScrapingService
+    ports:
+      - "5000:5000"
+    environment:
+      - EUREKA_SERVER=http://eureka-server:8761/eureka
+      - INSTANCE_HOST=web-scraping-service
+    depends_on:
+      - eureka-server
+    networks:
+      - micro-network
+
+  # --- Serwis Płytek (Python) ---
+  tile-service:
+    build: ./ThermalOptimizer
+    ports:
+      - "8089:8089"
+    environment:
+      - EUREKA_SERVER=http://eureka-server:8761/eureka
+      - INSTANCE_HOST=tile-service
+    depends_on:
+      - eureka-server
+    networks:
+      - micro-network
+
+networks:
+  micro-network:
+    driver: bridge

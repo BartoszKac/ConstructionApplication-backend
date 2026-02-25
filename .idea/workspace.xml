@@ -5,11 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e0cf0fb5-f101-4c76-8d6e-63c91f9213e8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/controler/UserControler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/controler/UserControler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/LoginResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/LoginResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/util/JsonCalculatorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/util/JsonCalculatorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gateway/src/main/java/com/example/Gateway/GatewayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Gateway/src/main/java/com/example/Gateway/GatewayConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gateway/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/Gateway/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MainService/src/main/java/com/example/backend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/MainService/src/main/java/com/example/backend/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MainService/src/main/java/com/example/backend/controler/TEST.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MainService/src/main/java/com/example/backend/security/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/MainService/src/main/java/com/example/backend/security/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MainService/src/main/java/com/example/backend/service/AccesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/MainService/src/main/java/com/example/backend/service/AccesService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MainService/src/main/java/com/example/backend/service/ApiShopService.java" beforeDir="false" afterPath="$PROJECT_DIR$/MainService/src/main/java/com/example/backend/service/ApiShopService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PaintingService/Aialgorythm.py" beforeDir="false" afterPath="$PROJECT_DIR$/PaintingService/Aialgorythm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PaintingService/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/PaintingService/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ThermalOptimizer/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/ThermalOptimizer/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ThermalOptimizer/engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/ThermalOptimizer/engine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebscrapingService/src/controler/Serwer.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebscrapingService/src/controler/Serwer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,13 +75,13 @@
     "Spring Boot.BackendApplication.executor": "Run",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/User/Desktop/Templatka/BackendApp",
+    "last_opened_file_path": "C:/Users/User/Desktop/Templatka/BackendApp/EurekaSerwer",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Java",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -203,6 +211,8 @@
       <workItem from="1766762082654" duration="3899000" />
       <workItem from="1766868828427" duration="60000" />
       <workItem from="1766869374346" duration="45000" />
+      <workItem from="1771529956492" duration="2727000" />
+      <workItem from="1771534795823" duration="729000" />
     </task>
     <servers />
   </component>
@@ -219,5 +229,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

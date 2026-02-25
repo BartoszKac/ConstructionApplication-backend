@@ -1,0 +1,5 @@
+flask
+spacy
+requests
+beautifulsoup4
+# dodaj inne, jeśli ich używasz, np. lxml, selenium
